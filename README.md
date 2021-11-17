@@ -1,1 +1,2 @@
-# Lua Scripts fo CC-Tweaks
+# Lua Scripts for the CC-Tweaks Minecraft MOD
+
