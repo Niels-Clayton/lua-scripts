@@ -10,7 +10,7 @@ local trash_items = {
     "minecraft:granite",
     "minecraft:diorite",
     "minecraft:andesite",
-    "quark:block/slate",
+    "quark:slate",
 }
 
 -- Mine in a quarry pattern until we hit something we can't dig
@@ -111,18 +111,7 @@ function trash()
                 end
             end
         end
-    --   for k2, v2 in pairs(settings.ignor) do
-    --     if v2 == data.name then
-    --       if not keptCobble and v2 == "minecraft:cobblestone" then
-    --         keptCobble = true
-    --       else
-    --         turtle.select(v)
-    --         turtle.drop()
-    --       end
-    --     end
-    --   end
     end
-
     return dropped
   end
 
@@ -182,39 +171,11 @@ local function tryForwards()
 	
 	xPos = xPos + xDir
 	zPos = zPos + zDir
-	return true
-end
-
-local function tryDown()
-	if not refuel() then
-		print( "Not enough Fuel" )
-		returnSupplies()
-	end
-	
-	while not turtle.down() do
-		if turtle.detectDown() then
-			if turtle.digDown() then
-                
-				if not collect() then
-					returnSupplies()
-				end
-			else
-				return false
-			end
-		elseif turtle.attackDown() then
-			if not collect() then
-				returnSupplies()
-			end
-		else
-			sleep( 0.5 )
-		end
-	end
-
-	depth = depth + 1
-	if math.fmod( depth, 10 ) == 0 then
-		print( "Descended "..depth.." metres." )
-	end
-
+    turtle.digUp()
+    turtle.digDown()
+    if not collect() then
+        returnSupplies()
+    end
 	return true
 end
 
@@ -364,7 +325,7 @@ while not done do
 	if done then
 		break
 	end
-	
+
 	if size > 1 then
 		if math.fmod(size,2) == 0 then
 			turnRight()
@@ -376,11 +337,6 @@ while not done do
 			end
 			alternate = 1 - alternate
 		end
-	end
-	
-	if not tryDown() then
-		done = true
-		break
 	end
 end
 
